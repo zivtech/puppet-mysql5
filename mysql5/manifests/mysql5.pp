@@ -13,6 +13,22 @@ class mysql5 {
     ]:
     ensure => running,
   }
+  exec { "Set MySQL server root password":
+    subscribe => [ 
+      Package["mysql-server"],
+      Package["mysql-server"],
+    ],
+    refreshonly => true,
+    unless => "mysqladmin -uroot -p$mysqlpassword status",
+    path => "/bin:/usr/bin",
+    command => "mysqladmin -uroot password $password",
+  }
+
+  file { "mycnf":
+    path => "/home/webadmin/.my.cnf",
+    content => template("mysql5/my.cnf.erb"),
+    owner => webadmin,
+  }
 }
 
 
