@@ -1,4 +1,4 @@
-class mysql5 {
+class mysql5 ($mysqlpassword) {
   package { 
     [
       "mysql-server",
