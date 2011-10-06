@@ -7,9 +7,12 @@ class mysql5 ($mysqlpassword) {
     ]: 
       ensure => installed 
   }
+  /*
   service {"mysql":
     ensure => running,
   }
+
+  # TODO: This doesn't actually work.
   exec { "Set MySQL server root password":
     subscribe => [ 
       Package["mysql-server"],
@@ -19,6 +22,7 @@ class mysql5 ($mysqlpassword) {
     path => "/bin:/usr/bin",
     command => "mysqladmin -uroot password $mysqlpassword",
   }
+  */
 
   file { "webadmin-mycnf":
     path => "/home/webadmin/.my.cnf",
@@ -32,6 +36,4 @@ class mysql5 ($mysqlpassword) {
     owner => webadmin,
   }
 }
-
-
 
