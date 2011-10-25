@@ -24,6 +24,14 @@ class mysql5 ($mysqlpassword) {
   }
   */
 
+  file { 'my.cnf':
+    path => "/etc/mysql/my.cnf",
+    owner => root,
+    group => root,
+    mode => 644,
+    source => "puppet:///modules/mysql5/my.cnf",
+  }
+
   file { "webadmin-mycnf":
     path => "/home/webadmin/.my.cnf",
     content => template("mysql5/my.cnf.erb"),
