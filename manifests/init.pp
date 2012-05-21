@@ -1,28 +1,27 @@
-class mysql5 ($mysqlpassword) {
-  package { 
-    [
-      "mysql-server",
-      "mysql-client",
-      "mysql-common",
-    ]: 
-      ensure => installed 
-  }
-  /*
-  service {"mysql":
-    ensure => running,
+class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
+  package { "mysql":
+      name => [
+        "mysql-server",
+        "mysql-client",
+        "mysql-common",
+      ],
+      ensure => installed,
   }
 
-  # TODO: This doesn't actually work.
+  # TODO: This only does the initial set, it won't reset it.
   exec { "Set MySQL server root password":
-    subscribe => [ 
-      Package["mysql-server"],
-    ],
     refreshonly => true,
     unless => "mysqladmin -uroot -p$mysqlpassword status",
     path => "/bin:/usr/bin",
     command => "mysqladmin -uroot password $mysqlpassword",
   }
-  */
+
+  exec { "set-mysql-password":
+    unless => "mysqladmin -uroot -p$mysqlpassword status",
+    path => ["/bin", "/usr/bin"],
+    command => "mysqladmin -uroot password $mysqlpassword",
+    require => Package["mysql"],
+  }
 
   file { 'my.cnf':
     path => "/etc/mysql/my.cnf",
@@ -32,16 +31,18 @@ class mysql5 ($mysqlpassword) {
     source => "puppet:///modules/mysql5/my.cnf",
   }
 
-  file { "webadmin-mycnf":
-    path => "/home/webadmin/.my.cnf",
-    content => template("mysql5/my.cnf.erb"),
-    owner => webadmin,
-  }
-
   file { "root-mycnf":
     path => "/root/.my.cnf",
     content => template("mysql5/my.cnf.erb"),
-    owner => webadmin,
+    owner => root,
   }
+
+  file { "admin-mycnf":
+    path => "/home/$webadminuser/.my.cnf",
+    content => template("mysql5/my.cnf.erb"),
+    owner => $webadminuser,
+    group => $webadmingroup,
+  }
+
 }
 
