@@ -8,6 +8,10 @@ class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
       ensure => installed,
   }
 
+  service { "mysql":
+    ensure => "running",
+  }
+
   # TODO: This only does the initial set, it won't reset it.
   exec { "Set MySQL server root password":
     refreshonly => true,
