@@ -17,12 +17,12 @@ class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
     require => Package['mysql']
   }
 
-  exec { "set-mysql-password":
-    unless => "mysqladmin -uroot -p$mysqlpassword status",
-    path => ["/bin", "/usr/bin"],
-    command => "mysqladmin -uroot password $mysqlpassword",
-    require => Package["mysql"],
-  }
+  # exec { "set-mysql-password":
+  #   unless => "mysqladmin -uroot -p$mysqlpassword status",
+  #   path => ["/bin", "/usr/bin"],
+  #   command => "mysqladmin -uroot password $mysqlpassword",
+  #   require => Package["mysql"],
+  # }
 
   file { 'my.cnf':
     path => "/etc/mysql/my.cnf",
