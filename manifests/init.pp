@@ -1,21 +1,24 @@
 class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
+  package { "mysql-server":
+    ensure => installed,
+  }
   package { "mysql":
-      name => [
-        "mysql-server",
-        "mysql-client",
-        "mysql-common",
-      ],
-      ensure => installed,
+    name => [
+      "mysql-client",
+      "mysql-common",
+    ],
+    ensure => installed,
+    require => Package['mysql-server'],
   }
 
   # TODO: This only does the initial set, it won't reset it.
-  exec { "Set MySQL server root password":
-    refreshonly => true,
-    unless => "mysqladmin -uroot -p$mysqlpassword status",
-    path => "/bin:/usr/bin",
-    command => "mysqladmin -uroot password $mysqlpassword",
-    require => Package['mysql']
-  }
+  # exec { "Set MySQL server root password":
+  #   refreshonly => true,
+  #   unless => "mysqladmin -uroot -p$mysqlpassword status",
+  #   path => "/bin:/usr/bin",
+  #   command => "mysqladmin -uroot password $mysqlpassword",
+  #   require => Package['mysql']
+  # }
 
   # exec { "set-mysql-password":
   #   unless => "mysqladmin -uroot -p$mysqlpassword status",
