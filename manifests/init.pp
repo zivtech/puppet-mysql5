@@ -51,5 +51,12 @@ class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
     require => Package['mysql']
   }
 
+  file { 'restore-mysql-tab-backup':
+    path => "/usr/local/bin/restore-mysql-tab-backup",
+    owner => root,
+    group => root,
+    mode => 755,
+    source => "puppet:///modules/mysql5/restore-mysql-tab-backup",
+    require => Package['mysql']
+  }
 }
-
