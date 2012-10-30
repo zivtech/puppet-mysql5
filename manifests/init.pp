@@ -14,15 +14,13 @@ class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
   # TODO: This only does the initial set, it won't reset it.
   # exec { "Set MySQL server root password":
   #   refreshonly => true,
-  #   unless => "mysqladmin -uroot -p$mysqlpassword status",
-  #   path => "/bin:/usr/bin",
+  #   unless => "/usr/bin/mysqladmin -uroot -p$mysqlpassword status",
   #   command => "mysqladmin -uroot password $mysqlpassword",
   #   require => Package['mysql']
   # }
 
   # exec { "set-mysql-password":
-  #   unless => "mysqladmin -uroot -p$mysqlpassword status",
-  #   path => ["/bin", "/usr/bin"],
+  #   unless => "/usr/bin/mysqladmin -uroot -p$mysqlpassword status",
   #   command => "mysqladmin -uroot password $mysqlpassword",
   #   require => Package["mysql"],
   # }
