@@ -27,11 +27,19 @@ class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
 
   file { 'my.cnf':
     path => "/etc/mysql/my.cnf",
-    owner => root,
-    group => root,
+    owner => 'root',
+    group => 'root',
     mode => 644,
     source => "puppet:///modules/mysql5/my.cnf",
-    require => Package['mysql']
+    require => Package['mysql'],
+    notify => Service['mysql'],
+  }
+
+  service { 'mysql':
+    enable => 'true',
+    ensure => 'running',
+    provider => 'upstart',
+    require => Package['mysql-server'],
   }
 
   file { "root-mycnf":
