@@ -36,7 +36,6 @@ class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
   }
 
   service { 'mysql':
-    enable => 'true',
     ensure => 'running',
     provider => 'upstart',
     require => Package['mysql-server'],
