@@ -42,6 +42,7 @@ class mysql5(
   }
 
   service { 'mysql':
+    enable => 'true',
     ensure => 'running',
     provider => 'upstart',
     require => Package['mysql-server'],
