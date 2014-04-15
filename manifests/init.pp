@@ -1,4 +1,10 @@
-class mysql5($mysqlpassword, $webadminuser = "root", $webadmingroup = "root") {
+# Installs and configures mysql5.
+class mysql5(
+  $mysqlpassword = 'CHANGEME',
+  $webadminuser = "webadmin",
+  $webadmingroup = "webadmin"
+) {
+
   package { "mysql-server":
     ensure => installed,
   }
